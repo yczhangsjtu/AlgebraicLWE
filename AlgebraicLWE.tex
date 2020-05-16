@@ -31,6 +31,7 @@
 \newcommand{\Tr}{\mathrm{Tr}}
 \newcommand{\TrKQ}{\mathrm{Tr}_{K/\mathbb{Q}}}
 \newcommand{\TrKRR}{\mathrm{Tr}_{K_{\mathbb{R}}/\mathbb{R}}}
+\newcommand{\TrKRpR}{\mathrm{Tr}_{K_{\mathbb{R}'}/\mathbb{R}}}
 \newcommand{\NKQ}{\mathrm{N}_{K/\mathbb{Q}}}
 \newcommand{\cOL}{\mathcal{O}^{\mathcal{L}}}
 \newcommand{\cOV}{\mathcal{O}^{\vee}}
@@ -41,12 +42,15 @@
 \newcommand{\KR}{K_{\mathbb{R}}}
 \newcommand{\va}{\vec{a}}
 \newcommand{\vb}{\vec{b}}
+\newcommand{\vc}{\vec{c}}
 \newcommand{\ve}{\vec{e}}
 \newcommand{\vp}{\vec{p}}
 \newcommand{\vr}{\vec{r}}
 \newcommand{\vs}{\vec{s}}
 \newcommand{\vx}{\vec{x}}
+\newcommand{\vy}{\vec{y}}
 \newcommand{\vbV}{\vec{b}^{\vee}}
+\newcommand{\vcV}{\vec{c}^{\vee}}
 \newcommand{\vpV}{\vec{p}^{\vee}}
 
 \newcommand{\divline}{\noindent\rule{6cm}{0.4pt}}
@@ -154,14 +158,25 @@
   	\item The \blue{coefficient ring} of $\cL$ is $\cOL:=\{x\in K:x\cL\subseteq\cL\}$ which is \dgreen{also an order} of $K$
   	\item If $\cL$ is itself an order $\cO$, then $\cOL=\cO$
   \end{itemize}
+}
 
-  \noindent\rule{6cm}{0.4pt}\\
+\frame
+{
+  \frametitle{Algebraic Number Theory}
   An $n$-dimensional $\cL$ \blue{lattice} admits a \dgreen{$\bbZ$-basis} $\vb=(b_1,\cdots,b_n)$ in $K$
   \begin{itemize}
   	\item The \blue{dual lattice} of $\cL$ is $\cLV:=\{x\in K:\TrKQ(x\cL)\subseteq\bbZ\}$
   	\item The \blue{dual basis} $\vbV:=(b_1^{\vee},\cdots,b_n^{\vee})$ where $\TrKQ(b_i\cdot b_j)=\delta_{ij}$ \dgreen{is a basis of} $\cLV$
   	\item $\cOL=\cO^{\cLV}$
   \end{itemize}
+
+  \divline\\
+
+  For $x\in\cL$, $\vb$ a basis of $\cL$, then the \blue{coordinate of $x$ under $\vb$} is $\vx=\Tr(x\cdot\vbV)$.
+
+  \divline\\
+
+  For $x,y\in\cL$, $\vx$ is \blue{coordinate of $x$ under $\vb$}, $\vy$ is \blue{coordinate of $y$ under $\vbV$}, then $\TrKQ(x\cdot y)=\langle\vx,\vy\rangle$
 }
 
 \frame
@@ -472,7 +487,46 @@
 	\end{enumerate}
 	It immediately follows that there is an \dgreen{efficient randomized reduction} from (search or decision) $\cO'$-LWE$_{q,\psi',\ell}^1$ to (search or decision, respectively) $\cO$-LWE$_{q,\psi,\ell}^k$.
   \end{block}
+}
 
+\frame
+{
+  \frametitle{Reduction from $\cO'$-LWE to $\cO$-LWE$^k$}
+  \textbf{Proof}:
+  \begin{itemize}
+  	\item The transformation maps $(a',b')\in\cO_q'\times\KR'/q\cOpV$ to
+  		\[(\va=\Tr(a',\vbV), b=\Tr(b')\bmod q\cOV)\in\cO_q^k\times\KR/q\cOV\]
+  	\item \textbf{Uniform case}:
+  		\begin{itemize}
+  			\item A \dgreen{uniform} $a'$ is mapped to \dgreen{uniform} $\va$ because $\vb$ is an \blue{$\cO_q$-basis} of $\cO_q'$
+  			\item A \dgreen{uniform} $b'$ is mapped to \dgreen{uniform} $b$ becase $\Tr:\KR'\to\KR$ is \blue{surjective $\KR$-linear map}, and $\Tr(\cOpV)\subseteq\cOV$
+  		\end{itemize}
+  	\item \textbf{LWE case}:
+  		\begin{itemize}
+  			\item Show that if $b'=s'\cdot a'+e'$ then $b=\langle\vs,\va\rangle+e$, for $\vs=\Tr(s',\vb)$, $e=\Tr(e')$
+  			\item $s'=\langle\vs,\vbV\rangle, a'=\langle\va,\vb\rangle\Rightarrow\Tr(s'\cdot a')=\langle\vs,\va\rangle$
+  		\end{itemize}
+  	\item \textbf{Reductions}:
+  		\begin{itemize}
+  			\item Decision problem: directly apply the above transform
+  			\item Search problem: recover $s$ from $\vs$ by $s=\langle\vs,\vbV\rangle$
+  		\end{itemize}
+  \end{itemize}
+}
+
+\frame
+{
+  \frametitle{Reduction from $\cO'$-LWE to $\cO$-LWE$^k$}
+  Similar to Theorem 5.1, $\psi'$ is \orange{related to} $\psi$, so our reduction is \red{one-to-one}. To obtain \dgreen{many-to-one} reduction, consider the case where \blue{$\psi'$ is Gaussian}
+  \begin{itemize}
+  	\item Fix orthonormal $\bbR$-bases $\vc$, $\vc'$ of $\KR,\KR'$ respectively, let matrix $A=\TrKRpR(\vc'\cdot(\vcV)^t)$,
+  	\item If $\psi'$ is Gaussian with covariance $\Sigma'$ under $\vc'$, then $\psi$ is Gaussian with covariance $\Sigma_1=A^t\cdot\Sigma'\cdot A$ under $\vc$
+  \end{itemize}
+  \begin{block}{Corollary 6.2}
+  Adopt the notation and hypothesis of Theorem 6.1, with $\psi'=D_{\Sigma'}$ over $\KR'$ for some positive definite matrix $\Sigma'$. For any $\Sigma\succ A^t\cdot\Sigma'\cdot A$, there is an \dgreen{efficient, randomized} reduction from (search or decision) $\cO'$-LWE$_{q,D_{\Sigma'},\ell}^1$ to (search or decision) $\cO$-LWE$_{q,D_{\Sigma},\ell}^k$.
+
+  Moreover, for $r=r'\sqrt{k}$, there is an \dgreen{efficient deterministic reduction} from (search or decision) $\cO'$-LWE$_{q,D_{r'},\ell}^1$ to (search or decision, respectively) $\cO$-LWE$_{q,D_{r},\ell}^k$.
+  \end{block}
 }
 
 \frame
