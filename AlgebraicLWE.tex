@@ -31,7 +31,7 @@
 \newcommand{\Tr}{\mathrm{Tr}}
 \newcommand{\TrKQ}{\mathrm{Tr}_{K/\mathbb{Q}}}
 \newcommand{\TrKRR}{\mathrm{Tr}_{K_{\mathbb{R}}/\mathbb{R}}}
-\newcommand{\TrKRpR}{\mathrm{Tr}_{K_{\mathbb{R}'}/\mathbb{R}}}
+\newcommand{\TrKRpR}{\mathrm{Tr}_{K_{\mathbb{R}}'/\mathbb{R}}}
 \newcommand{\NKQ}{\mathrm{N}_{K/\mathbb{Q}}}
 \newcommand{\cOL}{\mathcal{O}^{\mathcal{L}}}
 \newcommand{\cOV}{\mathcal{O}^{\vee}}
@@ -71,14 +71,14 @@
 \frame
 {
   \frametitle{Background}
-  Regev proposed the \blue{original LWE} [Reg09]
+  Regev proposed the \blue{original LWE} [Reg05]
 
   \begin{itemize}
-  	\item Average-case to worst-case security
-  	\item Impractical efficiency
+  	\item \dgreen{Average-case to worst-case} security
+  	\item \red{Impractical} efficiency
   \end{itemize}
 
-  \blue{Structured LWE}s are LWEs with special structure on matrix $A$
+  \blue{Structured LWE}s are LWEs with special structure
   \begin{figure}[ht!]
   \includegraphics[width=0.5\textwidth]{files/Structured-LWE.png}
   \end{figure}
@@ -100,7 +100,7 @@
 
   	\begin{figure}[ht!]
   	\includegraphics[width=0.45\textwidth]{files/General-LWE.png}
-  	\includegraphics[width=0.45\textwidth]{files/LWE-Reductions.png}
+  	\includegraphics[width=0.4\textwidth]{files/LWE-Reductions.png}
   	\end{figure}
 
   \end{itemize}
@@ -166,8 +166,9 @@
   An $n$-dimensional $\cL$ \blue{lattice} admits a \dgreen{$\bbZ$-basis} $\vb=(b_1,\cdots,b_n)$ in $K$
   \begin{itemize}
   	\item The \blue{dual lattice} of $\cL$ is $\cLV:=\{x\in K:\TrKQ(x\cL)\subseteq\bbZ\}$
-  	\item The \blue{dual basis} $\vbV:=(b_1^{\vee},\cdots,b_n^{\vee})$ where $\TrKQ(b_i\cdot b_j)=\delta_{ij}$ \dgreen{is a basis of} $\cLV$
+  	\item The \blue{dual basis} $\vbV:=(b_1^{\vee},\cdots,b_n^{\vee})$ where $\TrKQ(b_i\cdot b_j^{\vee})=\delta_{ij}$ \dgreen{is a basis of} $\cLV$
   	\item $\cOL=\cO^{\cLV}$
+  	\item $\cL'\subseteq\cL\Rightarrow\cL^{\vee}\subseteq\cLpV$
   \end{itemize}
 
   \divline\\
@@ -285,7 +286,7 @@
 
   \divline\\
 
-  The \blue{search $\cL$-LWE$_{q,\psi,\ell}^k$ problem} is given $\ell$ samples from $A_{q,\psi}^{\cL,k}(\vs)$ for \dgreen{arbitrary $\vs\in U((\cLV_q)^k)$}, find $\vs$
+  The \blue{search $\cL$-LWE$_{q,\psi,\ell}^k$ problem} is given $\ell$ samples from $A_{q,\psi}^{\cL,k}(\vs)$ for \dgreen{arbitrary $\vs\in (\cLV_q)^k$}, find $\vs$
 }
 
 \frame
@@ -368,7 +369,7 @@
   If $\cOLp\subseteq\cOL$ and the \blue{natrual inclusion map} $g:\cOLp_q\to\cOL_q$ is \dgreen{efficiently invertible bijection}, there is an \orange{efficient deterministic transform}:
   \begin{enumerate}
   	\item maps \blue{uniform distribution} over $(\cOL_q)^k\times\KR/q\cLV$ to \blue{uniform distribution} over $(\cOLp_q)^k\times\KR/q\cLpV$
-  	\item maps \blue{$\cL$-LWE distribution} $A_{q,\psi}^{\cL}(s)$ to \blue{$\cL'$-LWE distribution} $A_{q,\psi}^{\cL'}(s')$ where $s=s'\bmod q\cLpV$
+  	\item maps \blue{$\cL$-LWE distribution} $A_{q,\psi}^{\cL}(s)$ to \blue{$\cL'$-LWE distribution} $A_{q,\psi}^{\cL'}(s')$ where $s'=s\bmod q\cLpV$
   \end{enumerate}
   \end{block}
 }
@@ -442,7 +443,7 @@
 	  	\end{itemize}
 	  \item \textbf{LWE case}:
 	  	\begin{itemize}
-	  		\item The $\cO$-LWE bilinear map $T:\cOV_q\times\cO_q\to\cOV_q$ corresponds to $(n+d-1)\times n\times d$ tensor $T_{ijk}=\TrKQ(p_i^{\vee}\cdot p_j'\cdot p_k)\bmod q$, $T_{i\cdot\cdot}$ is a $n\times d$ \blue{Hankle matrix}
+	  		\item The $\cO$-LWE bilinear map $T:\cOV_q\times\cO_q\to\cOV_q$ corresponds to $d\times n\times d$ tensor $T_{ijk}=\TrKQ(p_i^{\vee}\cdot p_j'\cdot p_k)\bmod q$, $T_{i\cdot\cdot}$ is a $n\times d$ \blue{Hankle matrix}
 	  		\item The MP-LWE bilinear map $M:\bbZ^{n+d-1}\times\bbZ^n\to\bbZ^d$ corresponds to a tensor $M_{ijk}$ where $M_{i\cdot\cdot}$'s form a basis of all Hankle matrices, so there is $(n+d-1)\times d$ matrix $P$ such that $T_{i\cdot\cdot}=\sum_{j}M_{j\cdot\cdot}P_{ji}$
 	  	\end{itemize}
   \end{itemize}
@@ -454,9 +455,9 @@
   \textbf{Proof (Continued)}:
   \begin{itemize}
   	\item For $b=s\cdot a+e\bmod q\cOV$, let $\vs=\Tr(s\cdot\vp)\in\bbZ_q^d$, $\ve=\Tr(e,\vp)$, then $\vb=M(P\vs,\va)+\ve\bmod q\bbZ^d$
-  	\item To apply the transform to get a reduction from $\cO$-LWE to MP-LWE, $\vs$ needs to be \red{rerandomized}. Choose \blue{uniformly random} $\vr\in\bbZ_q^{n+d-1}$, and \blue{replace} sample $(\va,\vb)$ with $(\va,\vb+M(\vr,\va))$
+  	\item To apply the transform to get a reduction from $\cO$-LWE to MP-LWE, $\vs'$ needs to be \red{rerandomized}. Choose \blue{uniformly random} $\vr\in\bbZ_q^{n+d-1}$, and \blue{replace} sample $(\va,\vb)$ with $(\va,\vb+M(\vr,\va))$
   	\item For decision problem, apply the transform directly
-  	\item For search problem, recover the secret of $\cO$-LWE by $s=\langle\vpV,P_L^{-1}\vs\rangle$ where $P_L^{-1}$ is the left inverse of $P$
+  	\item For search problem, recover the secret of $\cO$-LWE by $s=\langle\vpV,P_L^{-1}\vs'\rangle$ where $P_L^{-1}$ is the left inverse of $P$
   \end{itemize}
 }
 
